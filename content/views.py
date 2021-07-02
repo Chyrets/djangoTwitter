@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
-from content.serveces.view_services import show_all_user_post, show_post
+from content.forms import AddPostForm
+from content.serveces.form_services import create_new_post
+from content.serveces.view_services import show_all_user_posts, show_post
 
 
 class MyPostsView(View):
@@ -10,7 +12,7 @@ class MyPostsView(View):
 
     def get(self, request):
         user = request.user
-        posts = show_all_user_post(user)
+        posts = show_all_user_posts(user)
 
         context = {
             'posts': posts
@@ -31,3 +33,24 @@ class PostView(View):
         }
 
         return render(request, self.template_name, context)
+
+
+class AddPostView(View):
+    """Страница на которой можно создать пост"""
+    form_class = AddPostForm
+    template_name = 'content/add_post.html'
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        user = request.user
+
+        if form.is_valid():
+            text = form.cleaned_data.get('text')
+            post = create_new_post(text, user)
+            return redirect('my_post')
+
+        return render(request, self.template_name)
