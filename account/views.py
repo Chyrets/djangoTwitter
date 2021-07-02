@@ -1,9 +1,29 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.views import View
 
 from account.forms import SignupForm
 from account.serveces.view_serveces import create_new_user
+
+
+class LoginUser(View):
+    """Страница для авторизации пользователя"""
+    template_name = 'account/login.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+
+        return render(request, self.template_name)
 
 
 class SignupView(View):
