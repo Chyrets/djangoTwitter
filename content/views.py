@@ -3,16 +3,15 @@ from django.views import View
 
 from content.forms import AddPostForm
 from content.serveces.form_services import create_new_post
-from content.serveces.view_services import show_all_user_posts, show_post
+from content.serveces.view_services import show_post, show_all_user_posts
 
 
-class MyPostsView(View):
-    """Страница с потсами авторизованного пользователя"""
+class UserPostsView(View):
+    """Страница с постами пользователя"""
     template_name = 'content/user_posts.html'
 
-    def get(self, request):
-        user = request.user
-        posts = show_all_user_posts(user)
+    def get(self, request, username):
+        posts = show_all_user_posts(username)
 
         context = {
             'posts': posts

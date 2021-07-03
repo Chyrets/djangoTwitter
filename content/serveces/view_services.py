@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from content.models import Post
 
 
-def show_all_user_posts(user: User) -> Post:
+def show_all_user_posts(username: str) -> Post:
     """Показать все посты пользователя"""
+    user = User.objects.get(username=username)
     return Post.objects.filter(author=user)
 
 
