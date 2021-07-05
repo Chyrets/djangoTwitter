@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{{ post.text }}
-{{ post.author }}
-{{ post.date }}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <p><strong>{{ post.text }}</strong></p>
+    {{ post.author }}
+    <br>
+    {{ post.date|date:"M d, Y" }}
+
+{% endblock content %}

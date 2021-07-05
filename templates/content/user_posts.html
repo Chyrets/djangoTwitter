@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% for post in posts %}
-        {{ post.text }}
-        {{ post.date }}
-        {{ post.author }}
-        <br>
-    {% endfor %}
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+    <div class="list-group">
+        {% for post in posts %}
+            <a href="{% url 'post' post.pk %}" class="list-group-item list-group-item-action">
+                <p><strong>{{ post.text }}</strong></p>
+                {{ post.author }}
+                <br>
+                {{ post.date|date:"M d, Y" }}
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
